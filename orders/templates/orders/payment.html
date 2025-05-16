@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}پرداخت | نکست شاپ{% endblock %}
+
+{% block content %}
+  <section class="payment-section">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="{% url 'home' %}">صفحه اصلی</a>
+        <span class="separator">/</span>
+        <a href="{% url 'cart' %}">سبد خرید</a>
+        <span class="separator">/</span>
+        <a href="{% url 'checkout' %}">تکمیل خرید</a>
+        <span class="separator">/</span>
+        <span>پرداخت</span>
+      </div>
+      
+      <div class="payment-container">
+        <div class="payment-card">
+          <div class="payment-header">
+            <div class="payment-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+            </div>
+            <h1>پرداخت آنلاین</h1>
+          </div>
+          
+          <div class="payment-details">
+            <div class="order-info">
+              <div class="info-row">
+                <span class="info-label">شماره سفارش:</span>
+                <span class="info-value">{{ order.id }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">تاریخ سفارش:</span>
+                <span class="info-value">{{ order.created_at|date:"j F Y - H:i" }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">نام خریدار:</span>
+                <span class="info-value">{{ order.full_name }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">مبلغ قابل پرداخت:</span>
+                <span class="info-value amount">{{ order.grand_total|floatformat:0|intcomma }} تومان</span>
+              </div>
+            </div>
+            
+            <div class="payment-notice">
+              <p>شما در حال پرداخت مبلغ <strong>{{ order.grand_total|floatformat:0|intcomma }} تومان</strong> برای سفارش شماره <strong>{{ order.id }}</strong> هستید.</p>
+              <p>پس از کلیک روی دکمه «پرداخت»، به درگاه بانکی منتقل خواهید شد.</p>
+            </div>
+            
+            <form method="post" class="payment-form">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary payment-btn">
+                <span class="btn-text">پرداخت</span>
+                <span class="btn-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m9 18 6-6-6-6"></path></svg>
+                </span>
+              </button>
+              <a href="{% url 'order_list' %}" class="btn btn-outline cancel-btn">انصراف</a>
+            </form>
+          </div>
+          
+          <div class="payment-footer">
+            <div class="secure-payment">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>پرداخت امن با استفاده از رمزنگاری SSL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

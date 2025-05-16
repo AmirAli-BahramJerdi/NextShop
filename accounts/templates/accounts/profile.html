@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}پروفایل کاربری | نکست شاپ{% endblock %}
+
+{% block content %}
+  <section class="profile-section">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="{% url 'home' %}">صفحه اصلی</a>
+        <span class="separator">/</span>
+        <span>پروفایل کاربری</span>
+      </div>
+      
+      <h1 class="page-title">پروفایل کاربری</h1>
+      
+      <div class="profile-content">
+        <div class="profile-sidebar">
+          <div class="user-info">
+            <div class="user-avatar">
+              {% if user.profile.avatar %}
+                <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}">
+              {% else %}
+                <div class="avatar-placeholder">
+                  {{ user.first_name|first|default:user.username|first }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="user-details">
+              <h3>{{ user.get_full_name|default:user.username }}</h3>
+              <p>{{ user.email }}</p>
+            </div>
+          </div>
+          
+          <nav class="profile-nav">
+            <a href="{% url 'profile' %}" class="nav-item active">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>اطلاعات شخصی</span>
+            </a>
+            <a href="{% url 'order_list' %}" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+              <span>سفارش‌های من</span>
+            </a>
+            <a href="{% url 'address_list' %}" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span>آدرس‌های من</span>
+            </a>
+            <a href="{% url 'wishlist' %}" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path></svg>
+              <span>علاقه‌مندی‌ها</span>
+            </a>
+            <a href="{% url 'change_password' %}" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>تغییر رمز عبور</span>
+            </a>
+            <a href="{% url 'account_logout' %}" class="nav-item logout">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
+              <span>خروج از حساب کاربری</span>
+            </a>
+          </nav>
+        </div>
+        
+        <div class="profile-main">
+          <div class="profile-card">
+            <div class="card-header">
+              <h2>اطلاعات شخصی</h2>
+              <p>اطلاعات شخصی خود را ویرایش کنید</p>
+            </div>
+            
+            <form method="post" enctype="multipart/form-data" class="profile-form">
+              {% csrf_token %}
+              
+              <div class="form-section">
+                <h3>اطلاعات اصلی</h3>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="{{ form.first_name.id_for_label }}">نام</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                      <div class="form-error">{{ form.first_name.errors }}</div>
+                    {% endif %}
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="{{ form.last_name.id_for_label }}">نام خانوادگی</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                      <div class="form-error">{{ form.last_name.errors }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">ایمیل</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                      <div class="form-error">{{ form.email.errors }}</div>
+                    {% endif %}
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="{{ form.phone.id_for_label }}">شماره تماس</label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}
+                      <div class="form-error">{{ form.phone.errors }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-section">
+                <h3>آدرس پیش‌فرض</h3>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="{{ form.city.id_for_label }}">شهر</label>
+                    {{ form.city }}
+                    {% if form.city.errors %}
+                      <div class="form-error">{{ form.city.errors }}</div>
+                    {% endif %}
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="{{ form.postal_code.id_for_label }}">کد پستی</label>
+                    {{ form.postal_code }}
+                    {% if form.postal_code.errors %}
+                      <div class="form-error">{{ form.postal_code.errors }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="{{ form.address.id_for_label }}">آدرس</label>
+                  {{ form.address }}
+                  {% if form.address.errors %}
+                    <div class="form-error">{{ form.address.errors }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              
+              <div class="form-section">
+                <h3>تصویر پروفایل</h3>
+                <div class="form-group avatar-upload">
+                  <div class="current-avatar">
+                    {% if user.profile.avatar %}
+                      <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}">
+                    {% else %}
+                      <div class="avatar-placeholder">
+                        {{ user.first_name|first|default:user.username|first }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  
+                  <div class="avatar-input">
+                    <label for="{{ form.avatar.id_for_label }}" class="btn btn-sm btn-outline">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path><line x1="16" x2="22" y1="5" y2="5"></line><line x1="19" x2="19" y1="2" y2="8"></line><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+                      <span>انتخاب تصویر</span>
+                    </label>
+                    {{ form.avatar }}
+                    {% if form.avatar.errors %}
+                      <div class="form-error">{{ form.avatar.errors }}</div>
+                    {% endif %}
+                    <p class="help-text">فرمت‌های مجاز: JPG، PNG، GIF - حداکثر حجم: 2MB</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                  <span class="btn-text">ذخیره تغییرات</span>
+                  <span class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

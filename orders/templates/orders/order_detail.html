@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}جزئیات سفارش #{{ order.id }} | نکست شاپ{% endblock %}
+
+{% block content %}
+<section class="order-detail-section">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{% url 'home' %}">صفحه اصلی</a>
+            <span class="separator">/</span>
+            <a href="{% url 'order_list' %}">سفارش‌های من</a>
+            <span class="separator">/</span>
+            <span>سفارش #{{ order.id }}</span>
+        </div>
+
+        <div class="order-detail-header">
+            <h1 class="page-title">جزئیات سفارش #{{ order.id }}</h1>
+            <div class="order-status status-{{ order.status }}">
+                {{ order.get_status_display }}
+            </div>
+        </div>
+
+        <div class="order-info-container">
+            <div class="order-info-card">
+                <h3>اطلاعات سفارش</h3>
+                <div class="info-row">
+                    <span class="info-label">تاریخ سفارش:</span>
+                    <span class="info-value">{{ order.created_at|date:"j F Y - H:i" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">وضعیت سفارش:</span>
+                    <span class="info-value status-{{ order.status }}">{{ order.get_status_display }}</span>
+                </div>
+                {% if order.tracking_code %}
+                    <div class="info-row">
+                        <span class="info-label">کد پیگیری:</span>
+                        <span class="info-value">{{ order.tracking_code }}</span>
+                    </div>
+                {% endif %}
+                <div class="info-row">
+                    <span class="info-label">روش پرداخت:</span>
+                    <span class="info-value">پرداخت آنلاین</span>
+                </div>
+                {% if order.payment_id %}
+                    <div class="info-row">
+                        <span class="info-label">شناسه پرداخت:</span>
+                        <span class="info-value">{{ order.payment_id }}</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="order-info-card">
+                <h3>اطلاعات خریدار</h3>
+                <div class="info-row">
+                    <span class="info-label">نام و نام خانوادگی:</span>
+                    <span class="info-value">{{ order.full_name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">ایمیل:</span>
+                    <span class="info-value">{{ order.email }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">شماره تماس:</span>
+                    <span class="info-value">{{ order.phone }}</span>
+                </div>
+            </div>
+
+            <div class="order-info-card">
+                <h3>آدرس تحویل</h3>
+                <div class="address-details">
+                    <p>{{ order.city }}، {{ order.address }}</p>
+                    <p>کد پستی: {{ order.postal_code }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-items-container">
+            <h3>محصولات سفارش</h3>
+            <div class="order-items">
+                {% for item in order.items.all %}
+                    <div class="order-item">
+                        <div class="item-image">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        </div>
+                        <div class="item-details">
+                            <a href="{{ item.product.get_absolute_url }}" class="item-name">{{ item.product.name }}</a>
+                            <div class="item-meta">
+                                <span class="item-quantity">{{ item.quantity }} عدد</span>
+                                <span class="item-price">{{ item.price|intcomma }} تومان</span>
+                            </div>
+                        </div>
+                        <div class="item-total">
+                            {{ item.total_price|intcomma }} تومان
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="order-summary">
+            <h3>خلاصه سفارش</h3>
+            <div class="summary-row">
+                <span class="summary-label">مجموع قیمت:</span>
+                <span class="summary-value">{{ order.total_price|intcomma }} تومان</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">هزینه ارسال:</span>
+                <span class="summary-value">
+                    {% if order.shipping_cost == 0 %}
+                        <span class="free-shipping">رایگان</span>
+                    {% else %}
+                        {{ order.shipping_cost|intcomma }} تومان
+                    {% endif %}
+                </span>
+            </div>
+            <div class="summary-row total">
+                <span class="summary-label">مبلغ کل:</span>
+                <span class="summary-value">{{ order.grand_total|intcomma }} تومان</span>
+            </div>
+        </div>
+
+        <div class="order-actions">
+            <a href="{% url 'order_list' %}" class="btn btn-secondary">بازگشت به لیست سفارش‌ها</a>
+            <button onclick="window.print()" class="btn btn-primary">پرینت فاکتور</button>
+        </div>
+    </div>
+</section>
+{% endblock %}

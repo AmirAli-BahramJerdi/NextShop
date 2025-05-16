@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  {% if current_category %}
+    {{ current_category.name }} | نکست شاپ
+  {% elif search_query %}
+    جستجو: {{ search_query }} | نکست شاپ
+  {% else %}
+    محصولات | نکست شاپ
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <section class="product-list-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="{% url 'home' %}">صفحه اصلی</a>
+        <span class="separator">/</span>
+        {% if current_category %}
+          <span>{{ current_category.name }}</span>
+        {% elif search_query %}
+          <span>جستجو: {{ search_query }}</span>
+        {% else %}
+          <span>محصولات</span>
+        {% endif %}
+      </div>
+
+      <div class="product-list-title">
+        <h1>
+          {% if current_category %}
+            {{ current_category.name }}
+          {% elif search_query %}
+            نتایج جستجو برای: {{ search_query }}
+          {% else %}
+            همه محصولات
+          {% endif %}
+        </h1>
+        {% if current_category and current_category.description %}
+          <p>{{ current_category.description }}</p>
+        {% endif %}
+      </div>
+
+      <div class="product-filters">
+        <div class="filter-options">
+          <div class="sort-by">
+            <label for="sort">مرتب‌سازی:</label>
+            <select id="sort" class="sort-select" onchange="window.location.href=this.value">
+              <option value="{% url 'product_list' %}{% if current_category %}category/{{ current_category.slug }}/{% endif %}?{% if search_query %}q={{ search_query }}&{% endif %}sort=newest" {% if current_sort == 'newest' %}selected{% endif %}>جدیدترین</option>
+              <option value="{% url 'product_list' %}{% if current_category %}category/{{ current_category.slug }}/{% endif %}?{% if search_query %}q={{ search_query }}&{% endif %}sort=price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>قیمت: کم به زیاد</option>
+              <option value="{% url 'product_list' %}{% if current_category %}category/{{ current_category.slug }}/{% endif %}?{% if search_query %}q={{ search_query }}&{% endif %}sort=price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>قیمت: زیاد به کم</option>
+              <option value="{% url 'product_list' %}{% if current_category %}category/{{ current_category.slug }}/{% endif %}?{% if search_query %}q={{ search_query }}&{% endif %}sort=popular" {% if current_sort == 'popular' %}selected{% endif %}>محبوب‌ترین</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="product-list">
+    <div class="container">
+      <div class="product-grid">
+        {% for product in products %}
+          <div class="product-card">
+            <a href="{{ product.get_absolute_url }}">
+              <img src="{{ product.image.url }}" alt="{{ product.name }}">
+              <h2>{{ product.name }}</h2>
+              {% if product.get_discount_percentage %}
+                <p class="discount">تخفیف {{ product.get_discount_percentage }}%</p>
+              {% endif %}
+              <p class="price">{{ product.price|intcomma }} تومان</p>
+              {% if product.discount_price %}
+                <p class="discount-price">{{ product.discount_price|intcomma }} تومان</p>
+              {% endif %}
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

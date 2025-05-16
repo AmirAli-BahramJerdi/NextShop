@@ -1,0 +1,95 @@
+<header>
+    <div class="container">
+      <div class="header-top">
+        <div class="logo">
+          <a href="{% url 'home' %}">
+            <div class="logo-icon">
+              <span class="logo-text">N</span>
+              <div class="logo-shine"></div>
+            </div>
+            <h1>نکست<span>شاپ</span></h1>
+          </a>
+        </div>
+        <div class="search-bar">
+          <form action="{% url 'product_list' %}" method="get">
+            <input type="text" name="q" placeholder="جستجو در محصولات..." value="{{ search_query|default:'' }}">
+            <button type="submit" class="search-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+            <div class="search-suggestions">
+              <div class="suggestion-header">جستجوهای پرطرفدار</div>
+              <div class="suggestion-items">
+                <a href="{% url 'product_list' %}?q=گوشی سامسونگ" class="suggestion-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  <span>گوشی سامسونگ</span>
+                </a>
+                <a href="{% url 'product_list' %}?q=لپ تاپ گیمینگ" class="suggestion-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  <span>لپ تاپ گیمینگ</span>
+                </a>
+                <a href="{% url 'product_list' %}?q=هدفون بی سیم" class="suggestion-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  <span>هدفون بی سیم</span>
+                </a>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="header-actions">
+          {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="header-action">
+              <div class="icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <div class="icon-glow"></div>
+              </div>
+              <span>پروفایل</span>
+            </a>
+          {% else %}
+            <a href="{% url 'account_login' %}" class="header-action">
+              <div class="icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <div class="icon-glow"></div>
+              </div>
+              <span>ورود</span>
+            </a>
+          {% endif %}
+          <a href="{% url 'wishlist' %}" class="header-action">
+            <div class="icon-container">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path></svg>
+              <div class="icon-glow"></div>
+            </div>
+            <span>علاقه‌مندی‌ها</span>
+          </a>
+          <a href="{% url 'cart' %}" class="header-action cart">
+            <div class="icon-container">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>
+              <div class="icon-glow"></div>
+              <span class="cart-count">{{ cart.total_items|default:'۰' }}</span>
+            </div>
+            <span>سبد خرید</span>
+          </a>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <div class="mobile-menu-toggle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+        </div>
+        <ul>
+          <li><a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">صفحه اصلی</a></li>
+          <li class="has-submenu">
+            <a href="{% url 'product_list' %}">دسته‌بندی کالاها</a>
+            <ul class="submenu">
+              {% for category in categories %}
+                <li><a href="{% url 'category_detail' category.slug %}">{{ category.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          <li><a href="{% url 'product_list' %}?sort=price_low">تخفیف‌ها و پیشنهادها</a></li>
+          <li><a href="{% url 'product_list' %}?sort=popular">پرفروش‌ترین‌ها</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'order_list' %}">سفارش‌های من</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </header>

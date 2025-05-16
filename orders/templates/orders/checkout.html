@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}تکمیل خرید | نکست شاپ{% endblock %}
+
+{% block content %}
+  <section class="checkout-section">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="{% url 'home' %}">صفحه اصلی</a>
+        <span class="separator">/</span>
+        <a href="{% url 'cart' %}">سبد خرید</a>
+        <span class="separator">/</span>
+        <span>تکمیل خرید</span>
+      </div>
+      
+      <h1 class="page-title">تکمیل خرید</h1>
+      
+      <div class="checkout-content">
+        <div class="checkout-form-container">
+          <form method="post" class="checkout-form">
+            {% csrf_token %}
+            
+            <div class="form-section">
+              <h3>اطلاعات شخصی</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="{{ form.full_name.id_for_label }}">نام و نام خانوادگی *</label>
+                  {{ form.full_name }}
+                  {% if form.full_name.errors %}
+                    <div class="form-error">{{ form.full_name.errors }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="{{ form.email.id_for_label }}">ایمیل *</label>
+                  {{ form.email }}
+                  {% if form.email.errors %}
+                    <div class="form-error">{{ form.email.errors }}</div>
+                  {% endif %}
+                </div>
+                
+                <div class="form-group">
+                  <label for="{{ form.phone.id_for_label }}">شماره تماس *</label>
+                  {{ form.phone }}
+                  {% if form.phone.errors %}
+                    <div class="form-error">{{ form.phone.errors }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-section">
+              <h3>آدرس تحویل</h3>
+              
+              {% if user.addresses.exists %}
+                <div class="saved-addresses">
+                  <label>انتخاب از آدرس‌های ذخیره شده:</label>
+                  <div class="address-list">
+                    {% for address in user.addresses.all %}
+                      <div class="address-item">
+                        <input type="radio" name="saved_address" id="address-{{ address.id }}" value="{{ address.id }}" {% if address.is_default %}checked{% endif %}>
+                        <label for="address-{{ address.id }}">
+                          <div class="address-title">{{ address.title }} ({{ address.get_address_type_display }})</div>
+                          <div class="address-details">
+                            <div>{{ address.recipient_name }} - {{ address.phone }}</div>
+                            <div>{{ address.city }}، {{ address.address }}</div>
+                            <div>کد پستی: {{ address.postal_code }}</div>
+                          </div>
+                        </label>
+                      </div>
+                    {% endfor %}
+                    
+                    <div class="address-item">
+                      <input type="radio" name="saved_address" id="address-new" value="new">
+                      <label for="address-new">
+                        <div class="address-title">استفاده از آدرس جدید</div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="new-address-form" id="new-address-fields" style="display: none;">
+              {% endif %}
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="{{ form.city.id_for_label }}">شهر *</label>
+                  {{ form.city }}
+                  {% if form.city.errors %}
+                    <div class="form-error">{{ form.city.errors }}</div>
+                  {% endif %}
+                </div>
+                
+                <div class="form-group">
+                  <label for="{{ form.postal_code.id_for_label }}">کد پستی *</label>
+                  {{ form.postal_code }}
+                  {% if form.postal_code.errors %}
+                    <div class="form-error">{{ form.postal_code.errors }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="{{ form.address.id_for_label }}">آدرس کامل *</label>
+                {{ form.address }}
+                {% if form.address.errors %}
+                  <div class="form-error">{{ form.address.errors }}</div>
+                {% endif %}
+              </div>
+              
+              {% if user.addresses.exists %}
+                </div>
+              {% endif %}
+            </div>
+            
+            <div class="form-section">
+              <h3>یادداشت سفارش (اختیاری)</h3>
+              <div class="form-group">
+                {{ form.notes }}
+              </div>
+            </div>
+            
+            <div class="form-section payment-methods">
+              <h3>روش پرداخت</h3>
+              <div class="payment-options">
+                <div class="payment-option">
+                  <input type="radio" name="payment_method" id="payment-online" value="online" checked>
+                  <label for="payment-online">
+                    <div class="payment-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+                    </div>
+                    <div class="payment-details">
+                      <div class="payment-title">پرداخت آنلاین</div>
+                      <div class="payment-description">پرداخت از طریق درگاه بانکی</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary checkout-btn">
+              <span class="btn-text">پرداخت و ثبت سفارش</span>
+              <span class="btn-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m9 18 6-6-6-6"></path></svg>
+              </span>
+            </button>
+          </form>
+        </div>
+        
+        <div class="checkout-sidebar">
+          <div class="order-summary">
+            <h3>خلاصه سفارش</h3>
+            
+            <div class="order-items">
+              {% for item in cart.items.all %}
+                <div class="order-item">
+                  <div class="item-image">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    <span class="item-quantity">{{ item.quantity }}</span>
+                  </div>
+                  <div class="item-details">
+                    <div class="item-name">{{ item.product.name }}</div>
+                    <div class="item-price">
+                      {% if item.product.discount_price %}
+                        {{ item.product.discount_price|floatformat:0|intcomma }} تومان
+                      {% else %}
+                        {{ item.product.price|floatformat:0|intcomma }} تومان
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="item-total">
+                    {{ item.total_price|floatformat:0|intcomma }} تومان
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            
+            <div class="summary-row">
+              <span class="summary-label">تعداد محصولات:</span>
+              <span class="summary-value">{{ cart.total_items }} عدد</span>
+            </div>
+            
+            <div class="summary-row">
+              <span class="summary-label">مجموع قیمت:</span>
+              <span class="summary-value">{{ cart.total_price|floatformat:0|intcomma }} تومان</span>
+            </div>
+            
+            <div class="summary-row shipping">
+              <span class="summary-label">هزینه ارسال:</span>
+              <span class="summary-value">
+                {% if cart.total_price > 500000 %}
+                  <span class="free-shipping">رایگان</span>
+                {% else %}
+                  <span>{{ shipping_cost|floatformat:0|intcomma }} تومان</span>
+                {% endif %}
+              </span>
+            </div>
+            
+            <div class="summary-row total">
+              <span class="summary-label">مبلغ قابل پرداخت:</span>
+              <span class="summary-value">
+                {% if cart.total_price > 500000 %}
+                  {{ cart.total_price|floatformat:0|intcomma }} تومان
+                {% else %}
+                  {{ cart.total_price|add:shipping_cost|floatformat:0|intcomma }} تومان
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Toggle new address form when using saved addresses
+      const savedAddressRadios = document.querySelectorAll('input[name="saved_address"]');
+      const newAddressFields = document.getElementById('new-address-fields');
+      
+      if (savedAddressRadios.length > 0 && newAddressFields) {
+        savedAddressRadios.forEach(radio => {
+          radio.addEventListener('change', function() {
+            if (this.value === 'new') {
+              newAddressFields.style.display = 'block';
+            } else {
+              newAddressFields.style.display = 'none';
+            }
+          });
+        });
+        
+        // Initialize on page load
+        const selectedAddress = document.querySelector('input[name="saved_address"]:checked');
+        if (selectedAddress && selectedAddress.value === 'new') {
+          newAddressFields.style.display = 'block';
+        }
+      }
+    });
+  </script>
+{% endblock %}

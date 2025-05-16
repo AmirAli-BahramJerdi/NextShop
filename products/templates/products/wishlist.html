@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}علاقه‌مندی‌های من | نکست شاپ{% endblock %}
+
+{% block content %}
+  <section class="wishlist-section">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="{% url 'home' %}">صفحه اصلی</a>
+        <span class="separator">/</span>
+        <a href="{% url 'profile' %}">پروفایل کاربری</a>
+        <span class="separator">/</span>
+        <span>علاقه‌مندی‌های من</span>
+      </div>
+      
+      <h1 class="page-title">علاقه‌مندی‌های من</h1>
+      
+      <div class="profile-content">
+        <div class="profile-sidebar">
+          <div class="user-info">
+            <div class="user-avatar">
+              {% if user.profile.avatar %}
+                <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}">
+              {% else %}
+                <div class="avatar-placeholder">
+                  {{ user.first_name|first|default:user.username|first }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="user-details">
+              <h3>{{ user.get_full_name|default:user.username }}</h3>
+              <p>{{ user.email }}</p>
+            </div>
+          </div>
+          
+          <nav class="profile-nav">
+            <a href="{% url 'profile' %}" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>اطلاعات شخصی</span>
+            </a>
+            <a href="{% url 'order_list' %}" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+              <span>سفارش‌های من</span>
+            </a>
+            <a href="{% url 'address_list' %}" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span>آدرس‌های من</span>
+            </a>
+            <a href="{% url 'wishlist' %}" class="nav-item active">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path></svg>
+              <span>علاقه‌مندی‌ها</span>
+            </a>
+            <a href="{% url 'change_password' %}" class="nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>تغییر رمز عبور</span>
+            </a>
+            <a href="{% url 'account_logout' %}" class="nav-item logout">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline></svg>
+              <span>خروج</span>
+            </a>
+          </nav>
+        </div>
+        
+        <div class="profile-main">
+          {% if wishlist_items %}
+            <div class="wishlist-items">
+              {% for item in wishlist_items %}
+                <div class="wishlist-item">
+                  <div class="product-image">
+                    <a href="{% url 'product_detail' item.product.slug %}">
+                      <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    </a>
+                  </div>
+                  <div class="product-info">
+                    <h3><a href="{% url 'product_detail' item.product.slug %}">{{ item.product.name }}</a></h3>
+                    <p class="price">{{ item.product.price }} تومان</p>
+                    <form method="post" action="{% url 'wishlist_toggle' item.product.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger">حذف از علاقه‌مندی‌ها</button>
+                    </form>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p>شما هنوز هیچ محصولی به علاقه‌مندی‌های خود اضافه نکرده‌اید.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

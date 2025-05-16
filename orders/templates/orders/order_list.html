@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}سفارش‌های من | نکست شاپ{% endblock %}
+
+{% block content %}
+  <section class="orders-section">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="{% url 'home' %}">صفحه اصلی</a>
+        <span class="separator">/</span>
+        <span>سفارش‌های من</span>
+      </div>
+      
+      <h1 class="page-title">سفارش‌های من</h1>
+      
+      {% if orders %}
+        <div class="orders-list">
+          <div class="orders-header">
+            <div class="order-header-item order-id-col">شماره سفارش</div>
+            <div class="order-header-item order-date-col">تاریخ</div>
+            <div class="order-header-item order-status-col">وضعیت</div>
+            <div class="order-header-item order-total-col">مبلغ کل</div>
+            <div class="order-header-item order-action-col"></div>
+          </div>
+          
+          {% for order in orders %}
+            <div class="order-item">
+              <div class="order-id-col">
+                <span class="order-id">#{{ order.id }}</span>
+              </div>
+              
+              <div class="order-date-col">
+                <span class="order-date">{{ order.created_at|date:"j F Y" }}</span>
+                <span class="order-time">{{ order.created_at|date:"H:i" }}</span>
+              </div>
+              
+              <div class="order-status-col">
+                <span class="order-status status-{{ order.status }}">
+                  {{ order.get_status_display }}
+                </span>
+              </div>
+              
+              <div class="order-total-col">
+                <span class="order-total">{{ order.grand_total|floatformat:0|intcomma }} تومان</span>
+              </div>
+              
+              <div class="order-action-col">
+                <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-outline">
+                  <span>مشاهده جزئیات</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m9 18 6-6-6-6"></path></svg>
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-orders">
+          <div class="empty-orders-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+          </div>
+          <h2>هنوز سفارشی ثبت نکرده‌اید</h2>
+          <p>برای مشاهده سفارش‌های خود، ابتدا خرید کنید.</p>
+          <a href="{% url 'product_list' %}" class="btn btn-primary">
+            <span class="btn-text">مشاهده محصولات</span>
+            <span class="btn-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m9 18 6-6-6-6"></path></svg>
+            </span>
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
