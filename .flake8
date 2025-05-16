@@ -1,0 +1,22 @@
+[flake8]
+# حداکثر طول هر خط کد
+max-line-length = 88
+
+# نادیده گرفتن برخی قوانین خاص (مثال: E203 و W503 معمولاً برای هماهنگی با black نادیده گرفته می‌شوند)
+ignore = E203, W503
+
+# پوشه‌ها یا فایل‌هایی که بررسی نشوند
+exclude =
+    .git,
+    __pycache__,
+    migrations,
+    venv,
+    env,
+    .venv
+
+# تعداد حداکثر خطای مجاز قبل از متوقف شدن
+max-complexity = 10
+
+# فعال کردن گزارش‌ها به صورت دقیق‌تر
+show-source = True
+statistics = True

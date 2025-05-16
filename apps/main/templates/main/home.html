@@ -1,0 +1,385 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load product_filters %}
+
+{% block content %}
+  <section class="hero-slider">
+    <div class="container">
+      <div class="slider">
+        {% for banner in banners %}
+          <div class="slide {% if forloop.first %}active{% endif %}">
+            <div class="slide-content">
+              <div class="slide-badge">{{ banner.subtitle }}</div>
+              <h2 class="slide-title glitch-text" data-text="{{ banner.title }}">{{ banner.title|safe }}</h2>
+              <p class="slide-description">{{ banner.description }}</p>
+              <div class="slide-cta">
+                <a href="{{ banner.button_link }}" class="btn btn-primary">
+                  <span class="btn-text">{{ banner.button_text }}</span>
+                  <span class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m9 18 6-6-6-6"></path></svg>
+                  </span>
+                </a>
+                <a href="{% url 'product_list' %}" class="btn btn-outline">
+                  <span class="btn-text">اطلاعات بیشتر</span>
+                </a>
+              </div>
+              <div class="slide-features">
+                <div class="slide-feature">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+                  <span>ضمانت اصالت کالا</span>
+                </div>
+                <div class="slide-feature">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect width="20" height="14" x="2" y="3" rx="2"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg>
+                  <span>ارسال سریع</span>
+                </div>
+              </div>
+            </div>
+            <div class="slide-image">
+              {% comment %} <img src="{{ banner.image.url }}" alt="{{ banner.title }}"> {% endcomment %}
+              <div class="slide-image-glow"></div>
+              <div class="slide-image-circle"></div>
+              <div class="slide-image-dots"></div>
+              <div class="floating-elements">
+                <div class="floating-element fe-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path></svg>
+                </div>
+                <div class="floating-element fe-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>
+                </div>
+                <div class="floating-element fe-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="slider-controls">
+        <button class="slider-arrow prev">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m9 18 6-6-6-6"></path></svg>
+        </button>
+        <div class="slider-dots">
+          {% for banner in banners %}
+            <span class="dot {% if forloop.first %}active{% endif %}"></span>
+          {% endfor %}
+        </div>
+        <button class="slider-arrow next">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m15 18-6-6 6-6"></path></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <div class="features-grid">
+        {% for feature in features %}
+          <div class="feature">
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">{{ feature.icon|safe }}</svg>
+              <div class="icon-particles"></div>
+            </div>
+            <div class="feature-content">
+              <h3>{{ feature.title }}</h3>
+              <p>{{ feature.description }}</p>
+            </div>
+            <div class="feature-hover-effect"></div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="special-offers">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>پیشنهادهای <span class="gradient-text">ویژه</span></h2>
+          <div class="section-line"></div>
+        </div>
+        <a href="{% url 'product_list' %}?sort=price_low" class="view-all">
+          <span>مشاهده همه</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+        </a>
+      </div>
+      <div class="products-grid">
+        {% for product in special_offers %}
+          <div class="product-card">
+            {% if product.badge != 'none' %}
+              <div class="product-badge {% if product.badge == 'hot' %}hot{% elif product.badge == 'new' %}new{% endif %}">
+                {% if product.badge == 'sale' %}
+                  {{ product.get_discount_percentage }}٪ تخفیف
+                {% elif product.badge == 'new' %}
+                  جدید
+                {% elif product.badge == 'hot' %}
+                  پیشنهاد ویژه
+                {% elif product.badge == 'bestseller' %}
+                  پرفروش
+                {% elif product.badge == 'limited' %}
+                  محدود
+                {% endif %}
+              </div>
+            {% endif %}
+            <div class="product-image">
+              {% comment %} <img src="{{ product.image.url }}" alt="{{ product.name }}"> {% endcomment %}
+              <div class="product-actions">
+                <form method="post" action="{% url 'wishlist_toggle' product.id %}" class="d-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="next" value="{{ request.path }}">
+                  <button type="submit" class="product-action-btn wishlist">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="{% if product.id in user_wishlist %}currentColor{% else %}none{% endif %}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path></svg>
+                  </button>
+                </form>
+                <button class="product-action-btn compare">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </button>
+                <a href="{{ product.get_absolute_url }}" class="product-action-btn quickview">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </a>
+              </div>
+              <div class="product-image-glow"></div>
+              <div class="product-image-shine"></div>
+            </div>
+            <div class="product-info">
+              <div class="product-category">{{ product.category.name }}</div>
+              <h3 class="product-title">{{ product.name }}</h3>
+              <div class="product-meta">
+                <div class="product-rating">
+                  <div class="stars">
+                    {% for i in "12345" %}
+                      {% if forloop.counter <= product.rating %}
+                        <span class="star filled"></span>
+                      {% elif forloop.counter <= product.rating|add:0.5 %}
+                        <span class="star half-filled"></span>
+                      {% else %}
+                        <span class="star"></span>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <span class="rating-count">({{ product.rating_count }})</span>
+                </div>
+              </div>
+              <div class="product-price">
+                {% if product.discount_price %}
+                  <span class="current-price">{{ product.discount_price|floatformat:0|intcomma }} تومان</span>
+                  <span class="old-price">{{ product.price|floatformat:0|intcomma }} تومان</span>
+                {% else %}
+                  <span class="current-price">{{ product.price|floatformat:0|intcomma }} تومان</span>
+                {% endif %}
+              </div>
+              <div class="product-progress">
+                <div class="progress-bar">
+                  <div class="progress" style="width: {{ product.sold|default:0|percentage:product.stock|add:product.sold }}%"></div>
+                </div>
+                <div class="progress-text">
+                  <span>فروش رفته: {{ product.sold|default:0|percentage:product.stock|add:product.sold }}٪</span>
+                  <span>موجودی: {{ product.stock }} عدد</span>
+                </div>
+              </div>
+              <form method="post" action="{% url 'add_to_cart' %}" class="add-to-cart-form">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="add-to-cart">
+                  <span class="btn-text">افزودن به سبد</span>
+                  <span class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>
+                  </span>
+                </button>
+              </form>
+            </div>
+            <div class="product-card-glow"></div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  {% if promo_banner %}
+    <section class="promo-banner">
+      <div class="container">
+        <div class="promo-content">
+          <div class="promo-text">
+            <div class="promo-badge">{{ promo_banner.subtitle }}</div>
+            <h2>{{ promo_banner.title|safe }}</h2>
+            <p>{{ promo_banner.description }}</p>
+            <div class="countdown" data-end="{{ promo_banner.end_date|date:'Y-m-d H:i:s' }}">
+              <div class="countdown-item">
+                <span class="countdown-number">۰۰</span>
+                <span class="countdown-label">روز</span>
+                <svg class="countdown-svg" viewBox="0 0 100 100">
+                  <circle class="countdown-circle" cx="50" cy="50" r="45"></circle>
+                </svg>
+              </div>
+              <div class="countdown-item">
+                <span class="countdown-number">۰۰</span>
+                <span class="countdown-label">ساعت</span>
+                <svg class="countdown-svg" viewBox="0 0 100 100">
+                  <circle class="countdown-circle" cx="50" cy="50" r="45"></circle>
+                </svg>
+              </div>
+              <div class="countdown-item">
+                <span class="countdown-number">۰۰</span>
+                <span class="countdown-label">دقیقه</span>
+                <svg class="countdown-svg" viewBox="0 0 100 100">
+                  <circle class="countdown-circle" cx="50" cy="50" r="45"></circle>
+                </svg>
+              </div>
+              <div class="countdown-item">
+                <span class="countdown-number">۰۰</span>
+                <span class="countdown-label">ثانیه</span>
+                <svg class="countdown-svg" viewBox="0 0 100 100">
+                  <circle class="countdown-circle" cx="50" cy="50" r="45"></circle>
+                </svg>
+              </div>
+            </div>
+            <a href="{{ promo_banner.button_link }}" class="btn btn-light">
+              <span class="btn-text">{{ promo_banner.button_text }}</span>
+              <span class="btn-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m9 18 6-6-6-6"></path></svg>
+              </span>
+            </a>
+          </div>
+          <div class="promo-image">
+            {% comment %} <img src="{{ promo_banner.image.url }}" alt="{{ promo_banner.title }}"> {% endcomment %}
+            <div class="promo-image-glow"></div>
+            <div class="promo-image-circle"></div>
+            <div class="floating-elements">
+              <div class="floating-element fe-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"></path><path d="M10 2c1 .5 2 2 2 5"></path></svg>
+              </div>
+              <div class="floating-element fe-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 19a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z"></path><path d="M12 19v2"></path><path d="M12 3V1"></path><path d="m4.22 10-2-.5"></path><path d="m21.78 10 2-.5"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path><path d="m6.34 6.34-1.41-1.41"></path><path d="m19.07 19.07-1.41-1.41"></path></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  <section class="categories">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>دسته‌بندی‌های <span class="gradient-text">محبوب</span></h2>
+          <div class="section-line"></div>
+        </div>
+      </div>
+      <div class="categories-grid">
+        {% for category in categories %}
+          <a href="{% url 'category_detail' category.slug %}" class="category-card">
+            <div class="category-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">{{ category.icon|safe }}</svg>
+              <div class="icon-particles"></div>
+            </div>
+            <div class="category-content">
+              <h3>{{ category.name }}</h3>
+              <span class="category-count">{{ category.product_count }} محصول</span>
+            </div>
+            <div class="category-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+            <div class="category-hover-effect"></div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter">
+    <div class="container">
+      <div class="newsletter-container">
+        <div class="newsletter-content">
+          <div class="newsletter-badge">عضویت در خبرنامه</div>
+          <h2>با ما همراه باشید</h2>
+          <p>برای اطلاع از آخرین تخفیف‌ها و محصولات جدید در خبرنامه ما عضو شوید</p>
+          <form class="newsletter-form" method="post" action="{% url 'newsletter' %}">
+            {% csrf_token %}
+            {{ newsletter_form.email }}
+            <button type="submit" class="btn btn-primary">
+              <span class="btn-text">عضویت</span>
+              <span class="btn-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+              </span>
+            </button>
+          </form>
+          <div class="newsletter-features">
+            <div class="newsletter-feature">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+              <span>اطلاع از تخفیف‌های ویژه</span>
+            </div>
+            <div class="newsletter-feature">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path></svg>
+              <span>دسترسی به محصولات جدید</span>
+            </div>
+          </div>
+        </div>
+        <div class="newsletter-decoration">
+          <div class="decoration-circle"></div>
+          <div class="decoration-dots"></div>
+          <div class="floating-elements">
+            <div class="floating-element fe-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </div>
+            <div class="floating-element fe-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    // Initialize countdown timer for promo banner
+    document.addEventListener('DOMContentLoaded', function() {
+      const countdownEl = document.querySelector('.countdown');
+      if (countdownEl) {
+        const endDate = new Date(countdownEl.dataset.end).getTime();
+        
+        function updateCountdown() {
+          const now = new Date().getTime();
+          const distance = endDate - now;
+          
+          if (distance < 0) {
+            // Countdown expired
+            document.querySelectorAll('.countdown-number').forEach(el => {
+              el.textContent = '۰۰';
+            });
+            return;
+          }
+          
+          // Calculate time units
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+          // Convert to Persian numerals
+          const toPersianNum = num => num.toString().padStart(2, '0').replace(/\d/g, d => String.fromCharCode(d.charCodeAt(0) + 1728));
+          
+          // Update countdown display
+          const countdownItems = document.querySelectorAll('.countdown-item');
+          countdownItems[0].querySelector('.countdown-number').textContent = toPersianNum(days);
+          countdownItems[1].querySelector('.countdown-number').textContent = toPersianNum(hours);
+          countdownItems[2].querySelector('.countdown-number').textContent = toPersianNum(minutes);
+          countdownItems[3].querySelector('.countdown-number').textContent = toPersianNum(seconds);
+          
+          // Update circle animations
+          const countdownCircles = document.querySelectorAll('.countdown-circle');
+          countdownCircles[0].style.strokeDashoffset = 283 - (283 * days) / 30;
+          countdownCircles[1].style.strokeDashoffset = 283 - (283 * hours) / 24;
+          countdownCircles[2].style.strokeDashoffset = 283 - (283 * minutes) / 60;
+          countdownCircles[3].style.strokeDashoffset = 283 - (283 * seconds) / 60;
+        }
+        
+        updateCountdown(); // Run once immediately
+        setInterval(updateCountdown, 1000);
+      }
+    });
+  </script>
+{% endblock %}
