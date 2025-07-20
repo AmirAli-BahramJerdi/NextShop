@@ -39,9 +39,6 @@ class Address(models.Model):
         verbose_name = "آدرس"
         verbose_name_plural = "آدرس‌ها"
         ordering = ['-is_default', 'id']
-        verbose_name = "آدرس"
-        verbose_name_plural = "آدرس‌ها"
-        ordering = ['-is_default', 'id']
     
     def __str__(self):
         return f"{self.title} - {self.recipient_name}"
