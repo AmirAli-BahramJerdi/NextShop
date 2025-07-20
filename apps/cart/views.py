@@ -104,5 +104,4 @@ class UpdateCartView(View):
                 'item_total': cart_item.total_price if action != 'remove' else 0,
                 'cart_subtotal': cart.total_price
             })
-        
         return redirect('cart')

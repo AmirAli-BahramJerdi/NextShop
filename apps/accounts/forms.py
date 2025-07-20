@@ -21,7 +21,6 @@ class ProfileForm(forms.ModelForm):
     
     def save(self, commit=True):
         profile = super().save(commit=False)
-        
         # Update user fields
         user = profile.user
         user.first_name = self.cleaned_data['first_name']
